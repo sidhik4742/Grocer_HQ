@@ -420,14 +420,14 @@ let cartDetails = useRef(null);
                     <div className="text-center">
                     <a
                       id="btn_make_Purchase"
-                      href="productlisting"
+                      href="#"
                       className="btn btn-out btn-primary btn-square btn-main mr-3"
                       data-abc="true"
                     >
                       Make Purchase
                     </a>
                     <a
-                      href="#"
+                      href="productlisting"
                       className="btn btn-out btn-success btn-square btn-main"
                       data-abc="true"
                     >
