@@ -40,7 +40,7 @@ let cartDetails = useRef(null);
   const incrementQuantity = async (id) => {
     try {
       console.log("Calling increaseQuantity", id);
-      let c = [...cartDetails.current.data.data];
+      let c = [...cartData];
       let cartItem = c.find(item => item.cart._id === id);
       if(parseInt(cartItem.cart.quantity) < parseInt(cartItem.product.quantity)){
       cartItem.cart.quantity = (parseInt(cartItem.cart.quantity) + 1).toString();
@@ -57,7 +57,7 @@ let cartDetails = useRef(null);
   const decrementQuantity = async (id) => {
     try {
       console.log("Calling decreaseQuantity", id);
-      let c = [...cartDetails.current.data.data];
+      let c = [...cartData];
       let cartItem = c.find(item => item.cart._id === id);
       if(parseInt(cartItem.cart.quantity) > 1){
         cartItem.cart.quantity = parseInt(cartItem.cart.quantity) - 1;
