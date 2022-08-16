@@ -4,39 +4,73 @@ import { axiosInstance } from '../../config/axios.config'
 import Header from '../Header/header.component'
 
 function ProductListing() {
-    const [products, setProducts] = React.useState()
+    const [products, setProducts] = React.useState([])
+    const [isChecked, setIsChecked] = React.useState(false)
+    const [categories, setCategories] = React.useState([])
 
+    let allCategory = useRef(null);
     let allProducts = useRef(null);
 
     const getAllProducts = async () => {
         allProducts.current = await axiosInstance.get('/products')
-        console.log('allProducts', allProducts.current.data);
+        // console.log('allProducts', allProducts.current.data);
         setProducts(allProducts.current.data)
     }
 
-    const addToCart = async (id) => {
+    const getAllCategories = async () => {
+        allCategory.current = await axiosInstance.get('/categories')
+        // console.log('allCategory', allCategory.current.data);
+        let categories = allCategory.current.data.data || []
+        categories.forEach(category => {
+            category.isChecked = false
+        })
+        setCategories(categories)
+        console.log('allCategory', categories);   
+    }
+
+
+    const getCheckedStatus = (event,id) => {
         console.log('id', id);
-        try{
-            let c = [...allProducts.current.data];
-            let findProduct = c.find(product => product._id === id);
-            console.log('findProduct', findProduct);
-            let cartData = {
-                category_id: findProduct.category_id,
-                product_id: findProduct._id,
+        let c = [...categories]
+        c.find(category => {
+            if(category._id === id) {
+                console.log('category', category)
+                category.isChecked = !category.isChecked
             }
-            let resp = await axiosInstance.post('/cart/add', cartData)
-            console.log('resp', resp.data);
-        }
-        catch(error){
-            console.log(error);
-        }
+        });
+        console.log('c', c);
+        setCategories(c)
+    }
+
+
+    const addToCart = async (e) => {
+        // console.log('id', id);
+        // try{
+        //     let c = [...allProducts.current.data];
+        //     let findProduct = c.find(product => product._id === id);
+        //     console.log('findProduct', findProduct);
+        //     let cartData = {
+        //         category_id: findProduct.category_id,
+        //         product_id: findProduct._id,
+        //     }
+        //     let resp = await axiosInstance.post('/cart/add', cartData)
+        //     console.log('resp', resp.data);
+        // }
+        // catch(error){
+        //     console.log(error);
+        // }
     }
 
 
 
     useEffect(() => {
-        getAllProducts()
+        getAllProducts();
     } , [])
+
+    useEffect(() => {
+        getAllCategories();
+    } , [])
+
 
 
   return (
@@ -52,24 +86,24 @@ function ProductListing() {
                             <h5 className="font-weight-semi-bold mb-4">Filter by price</h5>
                             <form>
                                 <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" checked id="price-all"/>
+                                    <input type="checkbox" className="custom-control-input" id="price-all"/>
                                     <label className="custom-control-label" for="price-all">All Price</label>
-                                    <span className="badge border font-weight-normal">1000</span>
+                                    <span className=" border badge font-weight-normal text-dark w-25 ">1000</span>
                                 </div>
                                 <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" className="custom-control-input" id="price-1"/>
                                     <label className="custom-control-label" for="price-1">$0 - $20</label>
-                                    <span className="badge border font-weight-normal">15</span>
+                                    <span className="badge border font-weight-normal text-dark w-25  ">15</span>
                                 </div>
                                 <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" className="custom-control-input" id="price-2"/>
                                     <label className="custom-control-label" for="price-2">$20 - $40</label>
-                                    <span className="badge border font-weight-normal">10</span>
+                                    <span className="badge border font-weight-normal text-dark w-25 ">10</span>
                                 </div>
                                 <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" className="custom-control-input" id="price-3"/>
                                     <label className="custom-control-label" for="price-3">$40 - $60</label>
-                                    <span className="badge border font-weight-normal">4</span>
+                                    <span className="badge border font-weight-normal text-dark w-25 ">4</span>
                                 </div>
                                 
                             </form>
@@ -78,35 +112,18 @@ function ProductListing() {
                             <h5 className="font-weight-semi-bold mb-4">Filter by Category</h5>
                             <form>
                                 <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" checked id="color-all"/>
-                                    <label className="custom-control-label" for="price-all">All</label>
-                                    <span className="badge border font-weight-normal">100</span>
+                                    <input type="checkbox" className="custom-control-input" id="color-all"/>
+                                    <label className="custom-control-label" for="price-all ">All</label>
+                                    <span className="badge border font-weight-normal text-dark w-25 ">100</span>
                                 </div>
-                                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="color-1"/>
-                                    <label className="custom-control-label" for="color-1">Creals</label>
-                                    <span className="badge border font-weight-normal">15</span>
-                                </div>
-                                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="color-2"/>
-                                    <label className="custom-control-label" for="color-2">Dairy</label>
-                                    <span className="badge border font-weight-normal">9</span>
-                                </div>
-                                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="color-3"/>
-                                    <label className="custom-control-label" for="color-3">Masalas</label>
-                                    <span className="badge border font-weight-normal">24</span>
-                                </div>
-                                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="color-4"/>
-                                    <label className="custom-control-label" for="color-4">Snacks</label>
-                                    <span className="badge border font-weight-normal">14</span>
-                                </div>
-                                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                                    <input type="checkbox" className="custom-control-input" id="color-5"/>
-                                    <label className="custom-control-label" for="color-5">Spices</label>
-                                    <span className="badge border font-weight-normal">6</span>
-                                </div>
+                                {categories &&categories.map((category, index) => {
+                                    return (
+                                    <div key={index} className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                        <input type="checkbox" className="custom-control-input" id="color-1" checked={category.isChecked} onClick={(e)=>getCheckedStatus(e,category._id)} />
+                                        <label className="custom-control-label" for="color-1">{category.name}</label>
+                                        <span className="badge border font-weight-normal text-dark w-25 "> 5</span>
+                                    </div>  
+                                )})}
                             </form>
                         </div>
                         
@@ -162,113 +179,16 @@ function ProductListing() {
                                 </div>
                             </div>)}):
                             <>
-                            <div className="col-lg-4 col-md-6 col-sm-12 pb-1">
-                                <div className="card product-item border-0 mb-4">
-                                    <div className="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                        <img className="img-fluid w-100" src="/assets/assets/images/chillipowder.jpg" alt=""/>
-                                    </div>
-                                    <div className="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                        <h6 className="text-truncate mb-3">Chilli Powder</h6>
-                                        <div className="d-flex justify-content-center">
-                                            <h6>$12.00</h6><h6 className="text-muted ml-2"><del>$23.00</del></h6>
-                                        </div>
-                                    </div>
-                                    <div className="card-footer d-flex justify-content-between bg-light border">
-                                        <a href="" className="btn btn-sm text-dark p-0"><i className="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                        <a href="" className="btn btn-sm text-dark p-0"><i className="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 pb-1">
-                                <div className="card product-item border-0 mb-4">
-                                    <div className="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                        <img className="img-fluid w-100" src="/assets/assets/images/coriander.jpg" alt=""/>
-                                    </div>
-                                    <div className="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                        <h6 className="text-truncate mb-3">Coriander</h6>
-                                        <div className="d-flex justify-content-center">
-                                            <h6>$12.00</h6><h6 className="text-muted ml-2"><del>$13.00</del></h6>
-                                        </div>
-                                    </div>
-                                    <div className="card-footer d-flex justify-content-between bg-light border">
-                                        <a href="" className="btn btn-sm text-dark p-0"><i className="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                        <a href="" className="btn btn-sm text-dark p-0"><i className="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 pb-1">
-                                <div className="card product-item border-0 mb-4">
-                                    <div className="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                        <img className="img-fluid w-100" src="/assets/assets/images/Rice.webp" alt=""/>
-                                    </div>
-                                    <div className="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                        <h6 className="text-truncate mb-3">Rice</h6>
-                                        <div className="d-flex justify-content-center">
-                                            <h6>$34.99</h6><h6 className="text-muted ml-2"><del>$39.00</del></h6>
-                                        </div>
-                                    </div>
-                                    <div className="card-footer d-flex justify-content-between bg-light border">
-                                        <a href="" className="btn btn-sm text-dark p-0"><i className="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                        <a href="" className="btn btn-sm text-dark p-0"><i className="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 pb-1">
-                                <div className="card product-item border-0 mb-4">
-                                    <div className="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                        <img className="img-fluid w-100" src="/assets/assets/images/paneer.webp" alt=""/>
-                                    </div>
-                                    <div className="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                        <h6 className="text-truncate mb-3">Paneer</h6>
-                                        <div className="d-flex justify-content-center">
-                                            <h6>$6.00</h6><h6 className="text-muted ml-2"><del>$12.00</del></h6>
-                                        </div>
-                                    </div>
-                                    <div className="card-footer d-flex justify-content-between bg-light border">
-                                        <a href="" className="btn btn-sm text-dark p-0"><i className="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                        <a href="" className="btn btn-sm text-dark p-0"><i className="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 pb-1">
-                                <div className="card product-item border-0 mb-4">
-                                    <div className="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                        <img className="img-fluid w-100" src="/assets/assets/images/chickenmasala.jpg" alt=""/>
-                                    </div>
-                                    <div className="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                        <h6 className="text-truncate mb-3">Chickem Masala</h6>
-                                        <div className="d-flex justify-content-center">
-                                            <h6>$5.49</h6><h6 className="text-muted ml-2"><del>$12.00</del></h6>
-                                        </div>
-                                    </div>
-                                    <div className="card-footer d-flex justify-content-between bg-light border">
-                                        <a href="" className="btn btn-sm text-dark p-0"><i className="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                        <a href="" className="btn btn-sm text-dark p-0"><i className="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 pb-1">
-                                <div className="card product-item border-0 mb-4">
-                                    <div className="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                        <img className="img-fluid w-100" src="/assets/assets/images/moondal.jpg" alt=""/>
-                                    </div>
-                                    <div className="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                        <h6 className="text-truncate mb-3">Haldigram MoonDal</h6>
-                                        <div className="d-flex justify-content-center">
-                                            <h6>$5.65</h6><h6 className="text-muted ml-2"><del>$7.00</del></h6>
-                                        </div>
-                                    </div>
-                                    <div className="card-footer d-flex justify-content-between bg-light border">
-                                        <a href="" className="btn btn-sm text-dark p-0"><i className="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                        <a href="" className="btn btn-sm text-dark p-0"><i className="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                                    </div>
-                                </div>
+                            <div className="col-lg-4 col-md-6 col-sm-12 pb-1 h-100 w-100 ">
+                                <p className=' text-center h2' >Oops!</p>
+                                <p className='text-center h4' 
+                                >No Products available. </p>
                             </div>
                             </>
                             }
                         
                         </div>
-                            <div className="col-12 pb-1">
+                            {products && <div className="col-12 pb-1">
                                 <nav aria-label="Page navigation">
                                 <ul className="pagination justify-content-center mb-3">
                                     <li className="page-item disabled">
@@ -288,7 +208,7 @@ function ProductListing() {
                                     </li>
                                 </ul>
                                 </nav>
-                            </div>
+                            </div>}
                         </div>
                     </div>
             

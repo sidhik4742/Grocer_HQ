@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { Rings,Circles,InfinitySpin,TailSpin } from  'react-loader-spinner'
 import { axiosInstance } from '../../config/axios.config'; 
 
 import Header from '../Header/header.component'
@@ -109,6 +110,7 @@ let cartDetails = useRef(null);
               <aside className="col-lg-9 cart-container">
                 <div className="card">
                   <div className="table-responsive">
+                    { cartData ? 
                     <table className="table table-borderless table-shopping-cart">
                       <thead className="text-muted">
                         <tr className="small text-uppercase">
@@ -178,8 +180,8 @@ let cartDetails = useRef(null);
                           </td>
                           <td>
                             <div className="price-wrap w-100 ">
-                              <var className="price w-50 ">${item.product.price}</var>
-                              <small className="text-muted w-100 "> | ${item.product.price * item.cart.quantity} each </small>{" "}
+                              <var className="price w-50 ">${parseInt(item.product.price).toFixed(2)}</var>
+                              <small className="text-muted w-100 "> | ${(parseInt(item.product.price) * parseInt(item.cart.quantity)).toFixed(2)} each </small>{" "}
                             </div>
                           </td>
                           <td className="text-right d-none d-md-block">
@@ -202,172 +204,19 @@ let cartDetails = useRef(null);
                         </tr>)
                         }):
                         <>
-                        <tr>
-                          <td>
-                            <figure className="itemside align-items-center">
-                              <div className="aside">
-                                <img
-                                  src="http://cdn.shopify.com/s/files/1/2454/3111/products/14.png?v=1647676806"
-                                  className="img-sm cart-image" />
-                              </div>
-                              <figcaption className="info">
-                                {" "}
-                                <a href="#" className="title text-dark" data-abc="true">
-                                  Rice
-                                </a>
-                                <p className="text-muted small">Brand: Pavizham</p>
-                              </figcaption>
-                            </figure>
-                          </td>
-                          <td>
-                            {" "}
-                            <select className="form-control">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                            </select>{" "}
-                          </td>
-                          <td>
-                            <div className="price-wrap">
-                              {" "}
-                              <var className="price">$10.00</var>{" "}
-                              <small className="text-muted"> $9.20 each </small>{" "}
-                            </div>
-                          </td>
-                          <td className="text-right d-none d-md-block">
-                            {" "}
-                            <a
-                              data-original-title="Save to Wishlist"
-                              title=""
-                              href=""
-                              className="btn btn-light"
-                              data-toggle="tooltip"
-                              data-abc="true"
-                            >
-                              {" "}
-                              <i className="fa fa-heart"></i>
-                            </a>{" "}
-                            <a href="" className="btn btn-light" data-abc="true">
-                              {" "}
-                              Remove
-                            </a>{" "}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <figure className="itemside align-items-center">
-                              <div className="aside">
-                                <img
-                                  src="https://www.collinsdictionary.com/images/full/apple_158989157.jpg"
-                                  className="img-sm cart-image" />
-                              </div>
-                              <figcaption className="info">
-                                {" "}
-                                <a href="#" className="title text-dark" data-abc="true">
-                                  Apple
-                                </a>
-                                <p className="text-muted small">Brand:</p>
-                              </figcaption>
-                            </figure>
-                          </td>
-                          <td>
-                            {" "}
-                            <select className="form-control">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                            </select>{" "}
-                          </td>
-                          <td>
-                            <div className="price-wrap">
-                              {" "}
-                              <var className="price">$15</var>{" "}
-                              <small className="text-muted"> $12 each </small>{" "}
-                            </div>
-                          </td>
-                          <td className="text-right d-none d-md-block">
-                            {" "}
-                            <a
-                              data-original-title="Save to Wishlist"
-                              title=""
-                              href=""
-                              className="btn btn-light"
-                              data-toggle="tooltip"
-                              data-abc="true"
-                            >
-                              {" "}
-                              <i className="fa fa-heart"></i>
-                            </a>{" "}
-                            <a
-                              href=""
-                              className="btn btn-light btn-round"
-                              data-abc="true"
-                            >
-                              {" "}
-                              Remove
-                            </a>{" "}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <figure className="itemside align-items-center">
-                              <div className="aside">
-                                <img
-                                  src="http://cdn.shopify.com/s/files/1/1030/6903/products/eastern_meat_masala_grande.jpg?v=1449054648"
-                                  className="img-sm cart-image" />
-                              </div>
-                              <figcaption className="info">
-                                {" "}
-                                <a href="#" className="title text-dark" data-abc="true">
-                                  Meat Masala
-                                </a>
-                                <p className="small text-muted">Brand: Estern</p>
-                              </figcaption>
-                            </figure>
-                          </td>
-                          <td>
-                            {" "}
-                            <select className="form-control">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                            </select>{" "}
-                          </td>
-                          <td>
-                            <div className="price-wrap">
-                              {" "}
-                              <var className="price">$9</var>{" "}
-                              <small className="text-muted"> $6 each</small>{" "}
-                            </div>
-                          </td>
-                          <td className="text-right d-none d-md-block">
-                            {" "}
-                            <a
-                              data-original-title="Save to Wishlist"
-                              title=""
-                              href=""
-                              className="btn btn-light"
-                              data-toggle="tooltip"
-                              data-abc="true"
-                            >
-                              {" "}
-                              <i className="fa fa-heart"></i>
-                            </a>{" "}
-                            <a
-                              href=""
-                              className="btn btn-light btn-round"
-                              data-abc="true"
-                            >
-                              {" "}
-                              Remove
-                            </a>{" "}
-                          </td>
-                        </tr>
-                        </>}
+                        <div className="pb-1 h-100 text-center ">
+                          <p className='text-center h4'> Cart is empty. </p>
+                        </div>
+                        </>
+                        }
                       </tbody>
                     </table>
+                    :
+                    <div className="h-100 p-4 ">
+                      {/* <Circles color="#00BFFF" height={80} width={80} wrapperStyle={{display: "flex",justifyContent: "center",alignItems: "center" }} /> */}
+                      <TailSpin color="#f00" height={50} width={50} wrapperStyle={{display: "flex",justifyContent: "center",alignItems: "center" }} />
+                    </div>
+                    }
                   </div>
                 </div>
               </aside>
